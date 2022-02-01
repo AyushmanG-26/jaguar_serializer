@@ -3,19 +3,24 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 part 'example.jser.dart';
 
 class Player {
-  String name;
-  String email;
-  int score;
-  List<Address> address;
+  String? name;
+  String? email;
+  int? score;
+  List<Address?>? address;
 
-  Player({this.name, this.email, this.score, this.address});
+  Player({
+    this.name,
+    this.email,
+    this.score,
+    this.address,
+  });
 
   String toString() => 'Player($name, $email, $score, $address)';
 }
 
 class Address {
-  String street;
-  String city;
+  String? street;
+  String? city;
 
   Address({this.street, this.city});
 
@@ -37,9 +42,9 @@ void main() {
       score: 1000,
       address: [(new Address(street: 'Skögsangavägen', city: 'Stockholm'))]);
 
-  final Map map = plSer.toMap(player);
+  final Map? map = plSer.toMap(player);
   print(map);
 
-  Player decoded = plSer.fromMap(map);
+  Player? decoded = plSer.fromMap(map!);
   print(decoded);
 }

@@ -1,7 +1,7 @@
 import '../serializer/serializer.dart';
 import '../serializer/field_processor.dart';
 
-typedef String NameFormatter(String fieldName);
+typedef String? NameFormatter(String? fieldName);
 
 /// Annotation used to request generation of serializer
 class GenSerializer {
@@ -40,7 +40,7 @@ class GenSerializer {
   /// final model = serializer.fromMap(map);
   /// print(model.myField); // print 'foo'
   /// ```
-  final NameFormatter nameFormatter;
+  final NameFormatter? nameFormatter;
 
   const GenSerializer(
       {this.fields: const <String, Field>{},
@@ -53,16 +53,16 @@ class GenSerializer {
 
 class Field<T> {
   /// Alias used while encoding
-  final String encodeTo;
+  final String? encodeTo;
 
   /// Alias used while decoding
-  final String decodeFrom;
+  final String? decodeFrom;
 
   /// Is it allowed to set the field to null value?
-  final bool isNullable;
+  final bool? isNullable;
 
   /// The field processor used to encode/decode this field
-  final FieldProcessor processor;
+  final FieldProcessor? processor;
 
   /// Should the field be included during encoding?
   final bool dontEncode;
@@ -78,13 +78,13 @@ class Field<T> {
       this.dontDecode: false,
       this.dontEncode: false});
 
-  const Field.encode({String alias, this.isNullable, this.processor})
+  const Field.encode({String? alias, this.isNullable, this.processor})
       : encodeTo = alias,
         dontEncode = false,
         decodeFrom = null,
         dontDecode = true;
 
-  const Field.decode({String alias, this.isNullable, this.processor})
+  const Field.decode({String? alias, this.isNullable, this.processor})
       : decodeFrom = alias,
         dontEncode = true,
         encodeTo = null,
@@ -102,16 +102,16 @@ class Field<T> {
 /// Annotation used to request encoding and decoding of a field in model
 class EnDecode<T> implements Field<T> {
   /// Alias used while encoding
-  final String encodeTo;
+  final String? encodeTo;
 
   /// Alias used while decoding
-  final String decodeFrom;
+  final String? decodeFrom;
 
   /// Is it allowed to set the field to null value?
-  final bool isNullable;
+  final bool? isNullable;
 
   /// The field processor used to encode/decode this field
-  final FieldProcessor processor;
+  final FieldProcessor? processor;
 
   /// Should the field be included during encoding?
   final bool dontEncode;
@@ -119,7 +119,7 @@ class EnDecode<T> implements Field<T> {
   /// Should the field be included during decoding?
   final bool dontDecode;
 
-  const EnDecode({String alias, this.isNullable, this.processor})
+  const EnDecode({String? alias, this.isNullable, this.processor})
       : encodeTo = alias,
         decodeFrom = alias,
         dontDecode = false,
@@ -129,16 +129,16 @@ class EnDecode<T> implements Field<T> {
 /// Annotation to ignore a field while encoding or decoding
 class Ignore implements Field<dynamic> {
   /// Alias used while encoding
-  final String encodeTo;
+  final String? encodeTo;
 
   /// Alias used while decoding
-  final String decodeFrom;
+  final String? decodeFrom;
 
   /// Is it allowed to set the field to null value?
-  final bool isNullable;
+  final bool? isNullable;
 
   /// The field processor used to encode/decode this field
-  final FieldProcessor processor;
+  final FieldProcessor? processor;
 
   /// Should the field be included during encoding?
   final bool dontEncode;
@@ -166,10 +166,10 @@ class Alias<T> implements Field<T> {
   final String decodeFrom;
 
   /// Is it allowed to set the field to null value?
-  final bool isNullable;
+  final bool? isNullable;
 
   /// The field processor used to encode/decode this field
-  final FieldProcessor processor;
+  final FieldProcessor? processor;
 
   /// Should the field be included during encoding?
   final bool dontEncode;

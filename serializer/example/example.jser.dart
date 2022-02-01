@@ -7,11 +7,11 @@ part of 'example.dart';
 // **************************************************************************
 
 abstract class _$PlayerSerializer implements Serializer<Player> {
-  Serializer<Address> __addressSerializer;
+  Serializer<Address>? __addressSerializer;
   Serializer<Address> get _addressSerializer =>
       __addressSerializer ??= new AddressSerializer();
   @override
-  Map<String, dynamic> toMap(Player model) {
+  Map<String, dynamic>? toMap(Player? model) {
     if (model == null) return null;
     Map<String, dynamic> ret = <String, dynamic>{};
     setMapValue(ret, 'name', model.name);
@@ -26,13 +26,13 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
   }
 
   @override
-  Player fromMap(Map map) {
+  Player? fromMap(Map? map) {
     if (map == null) return null;
     final obj = new Player();
     obj.name = map['name'] as String;
     obj.email = map['email'] as String;
     obj.score = map['score'] as int;
-    obj.address = codeIterable<Address>(map['address'] as Iterable,
+    obj.address = codeIterable<Address?>(map['address'] as Iterable,
         (val) => _addressSerializer.fromMap(val as Map));
     return obj;
   }
@@ -40,7 +40,7 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
 
 abstract class _$AddressSerializer implements Serializer<Address> {
   @override
-  Map<String, dynamic> toMap(Address model) {
+  Map<String, dynamic>? toMap(Address? model) {
     if (model == null) return null;
     Map<String, dynamic> ret = <String, dynamic>{};
     setMapValue(ret, 'street', model.street);
@@ -49,7 +49,7 @@ abstract class _$AddressSerializer implements Serializer<Address> {
   }
 
   @override
-  Address fromMap(Map map) {
+  Address? fromMap(Map? map) {
     if (map == null) return null;
     final obj = new Address();
     obj.street = map['street'] as String;

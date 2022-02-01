@@ -4,7 +4,7 @@ import './example.dart';
 void main() {
   SerializerRepo serializer = JsonRepo(serializers: [PlayerSerializer()]);
   {
-    Player player = serializer.oneFrom<Player>({
+    Player? player = serializer.oneFrom<Player>({
       'name': 'John',
       'email': 'john@noemail.com',
       'age': 25,

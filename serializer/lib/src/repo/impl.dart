@@ -1,16 +1,18 @@
+// ignore_for_file: unnecessary_cast
+
 part of 'repo.dart';
 
 class SerializerRepoImpl implements SerializerRepo {
   final Map<Type, Serializer> _mapperType = {};
 
-  SerializerRepoImpl({List<Serializer> serializers}) {
-    if (serializers is List) addAll(serializers);
+  SerializerRepoImpl({List<Serializer>? serializers}) {
+    if (serializers is List) addAll(serializers!);
   }
 
   Iterable<Serializer> get serializers => _mapperType.values;
 
   /// Return a [Serializer] for a Type
-  Serializer<T> getByType<T>(Type type) => _mapperType[type] as Serializer<T>;
+  Serializer<T>? getByType<T>(Type type) => _mapperType[type] as Serializer<T>?;
 
   /// Add a [Serializer] to the repository.
   ///
@@ -39,7 +41,7 @@ class SerializerRepoImpl implements SerializerRepo {
     } else if (object is Iterable) {
       return _transformIterableToDart(object);
     } else {
-      final Serializer serializer = getByType(type);
+      final Serializer? serializer = getByType(type);
 
       if (serializer == null)
         throw new Exception("Cannot find serializer for type $type");
@@ -49,27 +51,27 @@ class SerializerRepoImpl implements SerializerRepo {
   }
 
   /// Deserializes [object] to [T]
-  T oneFrom<T>(dynamic object) {
-    Serializer<T> ser = getByType(T);
-    return _deserializeOne(object, ser);
+  T? oneFrom<T>(dynamic object) {
+    Serializer<T>? ser = getByType(T);
+    return _deserializeOne(object, ser!);
   }
 
   /// Deserializes [object] ([List<dynamic>]) to [List<T>]
-  List<T> listFrom<T>(List object) {
-    Serializer<T> ser = getByType(T);
-    final ret = List<T>()..length = object.length;
+  List<T?>? listFrom<T>(List object) {
+    Serializer<T>? ser = getByType(T);
+    final ret = <T?>[]..length = object.length;
     for (int i = 0; i < object.length; i++)
-      ret[i] = _deserializeOne(object[i], ser);
+      ret[i] = _deserializeOne(object[i], ser!);
     return ret;
   }
 
-  Map<String, T> mapFrom<T>(Map<String, dynamic> object) {
-    Serializer<T> ser = getByType(T);
-    if (ser == null) return object?.cast<String, T>();
+  Map<String, T>? mapFrom<T>(Map<String, dynamic> object) {
+    Serializer<T>? ser = getByType(T);
+    if (ser == null) return object.cast<String, T>();
     return from<T>(object) as Map<String, T>;
   }
 
-  T _deserializeOne<T>(dynamic object, Serializer<T> ser) {
+  T? _deserializeOne<T>(dynamic object, Serializer<T>? ser) {
     if (object is String || object is num || object is bool || object == null)
       return object as T;
 
@@ -83,11 +85,11 @@ class SerializerRepoImpl implements SerializerRepo {
 
   /// Deserializes Dart built-in object to Dart PODO
   dynamic from<T>(dynamic object) {
-    Serializer<T> ser = getByType(T);
-    return _from<T>(object, ser: ser);
+    Serializer<T>? ser = getByType(T);
+    return _from<T>(object, ser: ser!);
   }
 
-  dynamic _from<T>(dynamic decoded, {Serializer<T> ser}) {
+  dynamic _from<T>(dynamic decoded, {Serializer<T>? ser}) {
     if (decoded is String ||
         decoded is num ||
         decoded is bool ||

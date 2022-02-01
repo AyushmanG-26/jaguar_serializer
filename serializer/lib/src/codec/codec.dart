@@ -14,9 +14,9 @@ abstract class CodecRepo<S> implements SerializerRepo {
 
   ///@nodoc
   /// use [deserialize]
-  T decodeOne<T>(S object);
+  T? decodeOne<T>(S object);
 
   ///@nodoc
   /// use [deserialize]
-  List<T> decodeList<T>(S object);
+  List<T?>? decodeList<T>(S object);
 }

@@ -27,12 +27,14 @@
 ///     class User {
 ///        DateTime birthday;
 ///     }
+// ignore_for_file: unnecessary_cast
+
 abstract class FieldProcessor<FromType, ToType> {
   /// Called to process field before decoding
-  FromType deserialize(ToType value);
+  FromType? deserialize(ToType value);
 
   /// Called to process field before encoding
-  ToType serialize(FromType value);
+  ToType? serialize(FromType value);
 }
 
 /// RawData Field Processor
@@ -68,7 +70,7 @@ class DynamicProcessor implements FieldProcessor<dynamic, dynamic> {
     if (object is num || object is String || object is bool) return object;
 
     if (object is List) {
-      final ret = List(object.length);
+      final ret = List<dynamic>.filled(object.length, dynamic);
       for (int i = 0; i < object.length; i++) {
         ret[i] = _validate(object[i]);
       }
@@ -93,10 +95,10 @@ class DynamicProcessor implements FieldProcessor<dynamic, dynamic> {
 class DateTimeMillisecondsProcessor implements FieldProcessor<DateTime, int> {
   const DateTimeMillisecondsProcessor();
 
-  int serialize(DateTime value) => value?.millisecondsSinceEpoch;
+  int? serialize(DateTime? value) => value?.millisecondsSinceEpoch;
 
   @override
-  DateTime deserialize(int value) => value != null
+  DateTime? deserialize(int? value) => value != null
       ? DateTime.fromMillisecondsSinceEpoch(value, isUtc: true).toLocal()
       : null;
 }
@@ -104,10 +106,10 @@ class DateTimeMillisecondsProcessor implements FieldProcessor<DateTime, int> {
 class MillisecondsProcessor implements FieldProcessor<DateTime, int> {
   const MillisecondsProcessor();
 
-  int serialize(DateTime value) => value?.toUtc()?.millisecondsSinceEpoch;
+  int? serialize(DateTime? value) => value?.toUtc().millisecondsSinceEpoch;
 
   @override
-  DateTime deserialize(int value) => value != null
+  DateTime? deserialize(int? value) => value != null
       ? DateTime.fromMillisecondsSinceEpoch(value, isUtc: true).toLocal()
       : null;
 }
@@ -115,15 +117,16 @@ class MillisecondsProcessor implements FieldProcessor<DateTime, int> {
 class SecondsProcessor implements FieldProcessor<DateTime, int> {
   const SecondsProcessor();
 
-  int serialize(DateTime value) {
+  int? serialize(DateTime? value) {
     if (value == null) return null;
     return value.toUtc().millisecondsSinceEpoch ~/ 1000;
   }
 
   @override
-  DateTime deserialize(int value) {
+  DateTime? deserialize(int? value) {
     if (value == null) return null;
-    return DateTime.fromMillisecondsSinceEpoch(value * 1000, isUtc: true).toLocal();
+    return DateTime.fromMillisecondsSinceEpoch(value * 1000, isUtc: true)
+        .toLocal();
   }
 }
 
@@ -131,10 +134,10 @@ class DateTimeProcessor implements FieldProcessor<DateTime, String> {
   const DateTimeProcessor();
 
   @override
-  String serialize(DateTime value) => value?.toIso8601String();
+  String? serialize(DateTime? value) => value?.toIso8601String();
 
   @override
-  DateTime deserialize(String value) =>
+  DateTime? deserialize(String? value) =>
       value != null ? DateTime.parse(value) : null;
 }
 
@@ -142,14 +145,14 @@ class DateTimeUtcProcessor implements FieldProcessor<DateTime, String> {
   const DateTimeUtcProcessor();
 
   @override
-  String serialize(DateTime value) => value?.toUtc()?.toIso8601String();
+  String? serialize(DateTime? value) => value?.toUtc().toIso8601String();
 
   @override
-  DateTime deserialize(String value) =>
+  DateTime? deserialize(String? value) =>
       value != null ? DateTime.parse(value) : null;
 }
 
-num _stringToNum(String value, bool ignoreErrors) => value != null
+num? _stringToNum(String? value, bool ignoreErrors) => value != null
     ? (ignoreErrors ? num.tryParse(value) : num.parse(value))
     : null;
 
@@ -159,10 +162,10 @@ class StringToNumProcessor implements FieldProcessor<String, num> {
   const StringToNumProcessor({this.ignoreErrors: true});
 
   @override
-  num serialize(String value) => _stringToNum(value, ignoreErrors);
+  num? serialize(String value) => _stringToNum(value, ignoreErrors);
 
   @override
-  String deserialize(num value) => value?.toString();
+  String? deserialize(num? value) => value?.toString();
 }
 
 class NumToStringProcessor implements FieldProcessor<num, String> {
@@ -171,10 +174,10 @@ class NumToStringProcessor implements FieldProcessor<num, String> {
   const NumToStringProcessor({this.ignoreErrors: true});
 
   @override
-  String serialize(num value) => value?.toString();
+  String? serialize(num? value) => value?.toString();
 
   @override
-  num deserialize(String value) => _stringToNum(value, ignoreErrors);
+  num? deserialize(String value) => _stringToNum(value, ignoreErrors);
 }
 
 class DoubleToNumProcessor implements FieldProcessor<double, num> {
@@ -184,7 +187,7 @@ class DoubleToNumProcessor implements FieldProcessor<double, num> {
   num serialize(double value) => value;
 
   @override
-  double deserialize(num value) => value?.toDouble();
+  double? deserialize(num? value) => value?.toDouble();
 }
 
 class IntToNumProcessor implements FieldProcessor<int, num> {
@@ -194,7 +197,7 @@ class IntToNumProcessor implements FieldProcessor<int, num> {
   num serialize(int value) => value;
 
   @override
-  int deserialize(num value) => value?.toInt();
+  int? deserialize(num? value) => value?.toInt();
 }
 
 class IntToStringProcessor implements FieldProcessor<int, String> {
@@ -203,10 +206,10 @@ class IntToStringProcessor implements FieldProcessor<int, String> {
   const IntToStringProcessor({this.ignoreErrors: true});
 
   @override
-  String serialize(int value) => value?.toString();
+  String? serialize(int? value) => value?.toString();
 
   @override
-  int deserialize(String value) => value != null
+  int? deserialize(String? value) => value != null
       ? (ignoreErrors ? int.tryParse(value) : int.parse(value))
       : null;
 }
@@ -217,10 +220,10 @@ class DoubleToStringProcessor implements FieldProcessor<double, String> {
   const DoubleToStringProcessor({this.ignoreErrors: true});
 
   @override
-  String serialize(double value) => value?.toString();
+  String? serialize(double? value) => value?.toString();
 
   @override
-  double deserialize(String value) => value != null
+  double? deserialize(String? value) => value != null
       ? (ignoreErrors ? double.tryParse(value) : double.parse(value))
       : null;
 }
@@ -229,12 +232,12 @@ class BoolToStringProcessor implements FieldProcessor<bool, String> {
   const BoolToStringProcessor();
 
   @override
-  bool deserialize(String value) {
+  bool? deserialize(String? value) {
     return value != null ? value == true.toString() : null;
   }
 
   @override
-  String serialize(bool value) {
+  String? serialize(bool? value) {
     return value?.toString();
   }
 }
@@ -243,7 +246,7 @@ class SafeNumProcessor implements FieldProcessor<num, dynamic> {
   const SafeNumProcessor();
 
   @override
-  num deserialize(final value) {
+  num? deserialize(final value) {
     if (value is String) {
       return num.tryParse(value) ?? double.nan;
     } else if (value is num) {
@@ -255,7 +258,7 @@ class SafeNumProcessor implements FieldProcessor<num, dynamic> {
   }
 
   @override
-  dynamic serialize(num value) {
+  dynamic serialize(num? value) {
     if (value?.isNaN == true || value?.isInfinite == true) {
       return '$value';
     }
@@ -267,13 +270,13 @@ class DurationProcessor implements FieldProcessor<Duration, int> {
   const DurationProcessor();
 
   @override
-  Duration deserialize(int value) {
+  Duration? deserialize(int? value) {
     if (value == null) return null;
     return Duration(microseconds: value);
   }
 
   @override
-  int serialize(Duration value) {
+  int? serialize(Duration? value) {
     if (value == null) return null;
     return value.inMicroseconds;
   }
