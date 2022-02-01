@@ -1,7 +1,7 @@
 part of jaguar_serializer.generator.writer;
 
 class FromItemWriter {
-  final Field field;
+  final Field? field;
 
   final bool hasGlobalNameForamtter;
 
@@ -12,7 +12,7 @@ class FromItemWriter {
 
     final outputTypeStr = prop.itemTypeStr;
 
-    if (field.isNullable) {
+    if (field!.isNullable!) {
       _w.write("codeIterable");
     } else {
       _w.write("codeNonNullIterable");
@@ -25,7 +25,7 @@ class FromItemWriter {
     _w.write('($reference as Iterable,');
     _w.write('(val) => ');
     _w.write(_makeValue('val', prop.itemInfo, cast: true));
-    if (!field.isNullable) _w.writeln(", <${outputTypeStr ?? 'dynamic'}>[]");
+    if (!field!.isNullable!) _w.writeln(", <${outputTypeStr ?? 'dynamic'}>[]");
     _w.write(')');
 
     return _w.toString();
@@ -36,7 +36,7 @@ class FromItemWriter {
 
     final outputTypeStr = map.valueTypeStr;
 
-    if (field.isNullable) {
+    if (field!.isNullable!) {
       _w.write('codeMap');
     } else {
       _w.write('codeNonNullMap');
@@ -49,7 +49,7 @@ class FromItemWriter {
     _w.write('($reference as Map,');
     _w.write('(val) =>');
     _w.write(_makeValue('val', map.valueInfo, cast: true));
-    if (!field.isNullable)
+    if (!field!.isNullable!)
       _w.writeln(", <String, ${outputTypeStr ?? 'dynamic'}>{}");
     _w.write(')');
 
@@ -61,7 +61,7 @@ class FromItemWriter {
 
     final outputTypeStr = prop.itemTypeStr;
 
-    if (field.isNullable) {
+    if (field!.isNullable!) {
       _w.write("codeSet");
     } else {
       _w.write("codeNonNullSet");
@@ -79,14 +79,11 @@ class FromItemWriter {
     return _w.toString();
   }
 
-  String _makeValue(String reference, TypeInfo prop, {bool cast: false}) {
+  String _makeValue(String reference, TypeInfo? prop, {bool cast: false}) {
     if (prop is BuiltinTypeInfo) {
-      if (prop.typeStr == 'double')
-      {
+      if (prop.typeStr == 'double') {
         return cast ? '($reference as num)?.toDouble()' : reference;
-      }
-      else
-      {
+      } else {
         return reference + (cast ? ' as ${prop.typeStr}' : '');
       }
     } else if (prop is EnumTypeInfo) {
@@ -117,16 +114,16 @@ class FromItemWriter {
   }
 
   String generate(bool isCtor) {
-    String key = "'${field.decodeFrom}'";
-    if (hasGlobalNameForamtter && field.name == field.decodeFrom) {
-      key = "_jserNameMapping['${field.name}']";
+    String key = "'${field!.decodeFrom}'";
+    if (hasGlobalNameForamtter && field!.name == field!.decodeFrom) {
+      key = "_jserNameMapping['${field!.name}']";
     }
     String ref = "map[$key]";
     var sb = StringBuffer();
-    sb.write(_makeValue(ref, field.typeInfo, cast: true));
-    if (!field.isNullable || isCtor)
-      sb.write(" ?? getJserDefault('${field.name}')");
-    if (!field.isNullable && !isCtor) sb.write(" ?? obj.${field.name}");
+    sb.write(_makeValue(ref, field!.typeInfo, cast: true));
+    if (!field!.isNullable! || isCtor)
+      sb.write(" ?? getJserDefault('${field!.name}')");
+    if (!field!.isNullable! && !isCtor) sb.write(" ?? obj.${field!.name}");
     return sb.toString();
   }
 }

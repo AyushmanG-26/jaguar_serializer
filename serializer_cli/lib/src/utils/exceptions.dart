@@ -1,5 +1,5 @@
 class JCException implements Exception {
-  final String message;
+  final String? message;
 
   JCException([this.message]);
 

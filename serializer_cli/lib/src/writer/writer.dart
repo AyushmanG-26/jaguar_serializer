@@ -35,7 +35,7 @@ class Writer {
 
   List<String> _providers = [];
 
-  void _providerWriter(TypeInfo prop) {
+  void _providerWriter(TypeInfo? prop) {
     if (prop is SerializedTypeInfo) {
       final fieldName = "_${firstCharToLowerCase(prop.instantiationString)}";
       if (_providers.contains(fieldName)) return;
@@ -58,11 +58,11 @@ class Writer {
         if (f.processor == null) continue;
         if (f.dontDecode && f.dontDecode) continue;
         final fieldName =
-            "_${firstCharToLowerCase(f.processor.instantiationString)}";
+            "_${firstCharToLowerCase(f.processor!.instantiationString)}";
         if (!written.contains(fieldName)) {
           written.add(fieldName);
           _w.writeln(
-              'final $fieldName = const ${f.processor.instantiationString}();');
+              'final $fieldName = const ${f.processor!.instantiationString}();');
         }
       }
     }
