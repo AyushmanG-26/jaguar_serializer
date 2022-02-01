@@ -1,5 +1,5 @@
 name: jaguar_serializer
-version: 2.2.12
+version: 3.0.0
 description: Platform and format agnostic serializer built using source_gen
 homepage: https://github.com/Jaguar-dart/jaguar_serializer
 documentation:
