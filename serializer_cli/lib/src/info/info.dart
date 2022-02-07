@@ -20,16 +20,21 @@ class SerializerInfo {
   final Map<String, Field> fields;
   final List<CtorArgument> ctorArguments;
   final List<ParameterElement> ctorNamedArguments;
-  String nameFormatter;
+  String? nameFormatter;
 
   SerializerInfo(this.name, this.modelName, this.fields,
-      {this.ctorArguments, this.ctorNamedArguments, this.nameFormatter});
+      {required this.ctorArguments,
+      required this.ctorNamedArguments,
+      this.nameFormatter});
 }
 
 class FieldProcessorInfo {
-  String get instantiationString => self.element.displayName;
-  String get serializedStr => serialized.displayName;
-  String get deserializedStr => deserialized.displayName;
+  String get instantiationString =>
+      self.element!.getDisplayString(withNullability: false);
+  String get serializedStr =>
+      serialized.getDisplayString(withNullability: false);
+  String get deserializedStr =>
+      deserialized.getDisplayString(withNullability: false);
 
   DartType get serialized => fp.typeArguments[1];
   DartType get deserialized => fp.typeArguments[0];
@@ -48,7 +53,7 @@ class Field {
   final String name;
 
   /// Type of the field
-  final DartType type;
+  final DartType? type;
 
   final bool dontEncode;
 
@@ -56,26 +61,27 @@ class Field {
 
   final bool isFinal;
 
-  String encodeTo;
+  String? encodeTo;
 
-  String decodeFrom;
+  String? decodeFrom;
 
-  final FieldProcessorInfo processor;
+  final FieldProcessorInfo? processor;
 
-  final bool isNullable;
+  final bool? isNullable;
 
-  TypeInfo typeInfo;
+  TypeInfo? typeInfo;
 
-  Field(
-      {@required this.name,
-      @required this.dontEncode,
-      @required this.dontDecode,
-      @required this.type,
-      this.isFinal: false,
-      @required this.encodeTo,
-      @required this.decodeFrom,
-      @required this.processor,
-      @required this.isNullable});
+  Field({
+    required this.name,
+    required this.dontEncode,
+    required this.dontDecode,
+    required this.type,
+    this.isFinal: false,
+    required this.encodeTo,
+    required this.decodeFrom,
+    required this.processor,
+    required this.isNullable,
+  });
 }
 
 abstract class TypeInfo {}

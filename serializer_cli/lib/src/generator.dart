@@ -48,7 +48,7 @@ class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
   }
 }
 
-Builder jaguarSerializerPartBuilder({String header}) => PartBuilder(
+Builder jaguarSerializerPartBuilder({String? header}) => PartBuilder(
       [JaguarSerializerGenerator()],
       '.jser.dart',
       header: header,

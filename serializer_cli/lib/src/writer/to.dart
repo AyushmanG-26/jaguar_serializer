@@ -10,7 +10,7 @@ class ToItemWriter {
   String _makeList(String reference, ListTypeInfo prop, {bool cast: false}) {
     var w = StringBuffer();
 
-    if (field.isNullable) {
+    if (field.isNullable!) {
       w.write("codeIterable(");
     } else {
       w.write("codeNonNullIterable(");
@@ -21,7 +21,7 @@ class ToItemWriter {
 
     w.write('(val) => ');
     w.write(_makeValue('val', prop.itemInfo, cast: true));
-    if (!field.isNullable) w.write(", []");
+    if (!field.isNullable!) w.write(", []");
     w.write(')');
 
     return w.toString();
@@ -30,7 +30,7 @@ class ToItemWriter {
   String _makeMap(String reference, MapTypeInfo map, {bool cast: false}) {
     StringBuffer _w = StringBuffer();
 
-    if (field.isNullable) {
+    if (field.isNullable!) {
       _w.write('codeMap(');
     } else {
       _w.write('codeNonNullMap(');
@@ -43,7 +43,7 @@ class ToItemWriter {
     _w.write('(val) =>');
     _w.write(_makeValue('val', map.valueInfo, cast: true));
 
-    if (!field.isNullable) _w.write(", <String, dynamic>{}");
+    if (!field.isNullable!) _w.write(", <String, dynamic>{}");
     _w.write(')');
 
     return _w.toString();
@@ -52,7 +52,7 @@ class ToItemWriter {
   String _makeSet(String reference, SetTypeInfo prop, {bool cast: false}) {
     var w = StringBuffer();
 
-    if (field.isNullable) {
+    if (field.isNullable!) {
       w.write("codeIterable(");
     } else {
       w.write("codeNonNullIterable(");
@@ -63,13 +63,13 @@ class ToItemWriter {
 
     w.write('(val) => ');
     w.write(_makeValue('val', prop.itemInfo, cast: true));
-    if (!field.isNullable) w.write(", []");
+    if (!field.isNullable!) w.write(", []");
     w.write(')');
 
     return w.toString();
   }
 
-  String _makeValue(String reference, TypeInfo type, {bool cast: false}) {
+  String _makeValue(String reference, TypeInfo? type, {bool cast: false}) {
     if (type is BuiltinTypeInfo) {
       return reference + (cast ? ' as ${type.typeStr}' : '');
     } else if (type is EnumTypeInfo) {
@@ -106,7 +106,7 @@ class ToItemWriter {
 
   String generate() {
     var sb = StringBuffer();
-    if (field.isNullable) {
+    if (field.isNullable!) {
       sb.write('setMapValue(ret,');
     } else {
       sb.write('setMapValueIfNotNull(ret,');
