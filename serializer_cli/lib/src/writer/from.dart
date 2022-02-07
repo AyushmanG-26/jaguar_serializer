@@ -10,7 +10,7 @@ class FromItemWriter {
   String _makeList(String reference, ListTypeInfo prop) {
     var _w = StringBuffer();
 
-    final outputTypeStr = prop.itemTypeStr;
+    final String? outputTypeStr = prop.itemTypeStr;
 
     if (field!.isNullable!) {
       _w.write("codeIterable");
@@ -34,7 +34,7 @@ class FromItemWriter {
   String _makeMap(String reference, MapTypeInfo map) {
     StringBuffer _w = StringBuffer();
 
-    final outputTypeStr = map.valueTypeStr;
+    final String? outputTypeStr = map.valueTypeStr;
 
     if (field!.isNullable!) {
       _w.write('codeMap');
@@ -59,7 +59,7 @@ class FromItemWriter {
   String _makeSet(String reference, SetTypeInfo prop) {
     var _w = StringBuffer();
 
-    final outputTypeStr = prop.itemTypeStr;
+    final String? outputTypeStr = prop.itemTypeStr;
 
     if (field!.isNullable!) {
       _w.write("codeSet");

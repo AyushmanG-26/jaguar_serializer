@@ -456,7 +456,7 @@ class AnnotationParser {
 
 bool _notNull(DartObject? obj) => obj != null && obj.isNull == false;
 
-String _getStringField(DartObject? v, String name) =>
+String? _getStringField(DartObject? v, String name) =>
     v!.getField(name)!.toStringValue()!;
 
 String _mapToString(DartObject? v) => v!.toStringValue()!;
