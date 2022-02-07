@@ -36,15 +36,15 @@ class MongoDateTime implements FieldProcessor<DateTime, DateTime> {
 abstract class MgoAccess<ModelType> {
   Serializer<ModelType> get codec;
 
-  ModelType decode(Map data) {
+  ModelType? decode(Map data) {
     return codec.fromMap(data);
   }
 
-  List<ModelType> decodeList(List<Map> data) =>
+  List<ModelType?> decodeList(List<Map> data) =>
       data.map((Map item) => codec.fromMap(item)).toList();
 
-  Map encode(ModelType data) => codec.toMap(data);
+  Map? encode(ModelType data) => codec.toMap(data);
 
-  List<Map> encodeList(List<ModelType> data) =>
+  List<Map?> encodeList(List<ModelType> data) =>
       data.map((ModelType item) => codec.toMap(item)).toList();
 }

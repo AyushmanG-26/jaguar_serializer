@@ -7,20 +7,20 @@ import '../models/player/player.dart';
 
 main() {
   group('mongo.ObjectId', () {
-    Db db;
+    Db? db;
 
     setUp(() async {
       db = new Db('mongodb://localhost:27017/jaguar_mongo_test');
-      await db.open();
+      await db!.open();
     });
 
     tearDown(() async {
-      await db.drop();
-      await db.close();
+      await db!.drop();
+      await db!.close();
     });
 
     test('Encode', () async {
-      DbCollection coll = db.collection('one');
+      DbCollection coll = db!.collection('one');
       ObjectId id = new ObjectId();
       ObjectId allianceId = new ObjectId();
 
@@ -33,10 +33,10 @@ main() {
         ..score = 500000
         ..emailConfirmed = true;
 
-      await coll.insert(Player.serializer.toMap(player));
+      await coll.insert(Player.serializer.toMap(player)!);
 
-      Map result = await coll.findOne(where.id(id));
-      expect(result['_id'], new isInstanceOf<ObjectId>());
+      Map? result = await coll.findOne(where.id(id));
+      expect(result!['_id'], new isInstanceOf<ObjectId>());
       expect(result['_id'], id);
 
       expect(result['allianceId'], new isInstanceOf<ObjectId>());
@@ -50,7 +50,7 @@ main() {
     });
 
     test('Decode', () async {
-      DbCollection coll = db.collection('one');
+      DbCollection coll = db!.collection('one');
       ObjectId id = new ObjectId();
       ObjectId allianceId = new ObjectId();
 
@@ -63,10 +63,10 @@ main() {
         ..score = 500000
         ..emailConfirmed = true;
 
-      await coll.insert(Player.serializer.toMap(player));
+      await coll.insert(Player.serializer.toMap(player)!);
 
-      Map result = await coll.findOne(where.id(id));
-      Player decoded = Player.serializer.fromMap(result);
+      Map? result = await coll.findOne(where.id(id));
+      Player decoded = Player.serializer.fromMap(result!)!;
 
       expect(decoded.id, new isInstanceOf<String>());
       expect(decoded.id, id.toHexString());

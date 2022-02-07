@@ -269,34 +269,34 @@ class AnnotationParser {
   void _parseFieldFormatter(ConstantReader? obj) {
     if (obj == null || obj.isNull) return;
     Uri uri = obj.revive().source;
-    String accessor = obj.revive().accessor;
+    String? accessor = obj.revive().accessor;
     if (uri.pathSegments.length > 0 ||
         uri.pathSegments.first == 'jaguar_serializer') {
       NameFormatter? nf;
       switch (accessor) {
         case 'toCamelCase':
-          nf = toCamelCase;
+          nf = toCamelCase as NameFormatter?;
           break;
         case 'toSnakeCase':
-          nf = toSnakeCase;
+          nf = toSnakeCase as NameFormatter?;
           break;
         case 'toKebabCase':
-          nf = toKebabCase;
+          nf = toKebabCase as NameFormatter?;
           break;
         case 'onlyFirstChar':
-          nf = onlyFirstChar;
+          nf = onlyFirstChar as NameFormatter?;
           break;
         case 'onlyFirstCharInCaps':
-          nf = onlyFirstCharInCaps;
+          nf = onlyFirstCharInCaps as NameFormatter?;
           break;
         case 'onlyFirstCharInLower':
-          nf = onlyFirstCharInLower;
+          nf = onlyFirstCharInLower as NameFormatter?;
           break;
         case 'withFirstCharInCaps':
-          nf = withFirstCharInCaps;
+          nf = withFirstCharInCaps as NameFormatter?;
           break;
         case 'withFirstCharInLower':
-          nf = withFirstCharInLower;
+          nf = withFirstCharInLower as NameFormatter?;
           break;
       }
       if (nf != null) {

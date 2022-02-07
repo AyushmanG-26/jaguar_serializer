@@ -9,11 +9,11 @@ part of serializer.test.models.player;
 abstract class _$PlayerSerializer implements Serializer<Player> {
   final _mongoId = const MongoId();
   @override
-  Map<String, dynamic> toMap(Player model) {
+  Map<String, dynamic>? toMap(Player? model) {
     if (model == null) return null;
     Map<String, dynamic> ret = <String, dynamic>{};
-    setMapValue(ret, '_id', _mongoId.serialize(model.id));
-    setMapValue(ret, 'allianceId', _mongoId.serialize(model.allianceId));
+    setMapValue(ret, '_id', _mongoId.serialize(model.id!));
+    setMapValue(ret, 'allianceId', _mongoId.serialize(model.allianceId!));
     setMapValue(ret, 'name', model.name);
     setMapValue(ret, 'email', model.email);
     setMapValue(ret, 'age', model.age);
@@ -23,12 +23,11 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
   }
 
   @override
-  Player fromMap(Map map) {
+  Player? fromMap(Map? map) {
     if (map == null) return null;
     final obj = new Player();
-    obj.id = _mongoId.deserialize(map['_id'] as ObjectId) as String;
-    obj.allianceId =
-        _mongoId.deserialize(map['allianceId'] as ObjectId) as String;
+    obj.id = _mongoId.deserialize(map['_id'] as ObjectId);
+    obj.allianceId = _mongoId.deserialize(map['allianceId'] as ObjectId);
     obj.name = map['name'] as String;
     obj.email = map['email'] as String;
     obj.age = map['age'] as int;

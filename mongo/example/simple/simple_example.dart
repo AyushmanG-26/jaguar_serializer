@@ -21,12 +21,12 @@ main() async {
       ..score = 500000
       ..emailConfirmed = true;
 
-    await coll.insert(player.toMongo());
+    await coll.insert(player.toMongo()!);
 
-    Map result = await coll.findOne(where.id(id));
+    Map? result = await coll.findOne(where.id(id));
     print(result);
 
-    Player decoded = Player.fromMap(result);
+    Player? decoded = Player.fromMap(result!);
     print(decoded);
   } finally {
     await db.drop();

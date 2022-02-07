@@ -17,35 +17,35 @@ class PlayerSerializer extends Serializer<Player> with _$PlayerSerializer {
 /// Player model for the game
 class Player {
   /// Id of the player
-  String id;
+  String? id;
 
   /// Id of the alliance the player belongs to
-  String allianceId;
+  String? allianceId;
 
   /// Name of the player
-  String name;
+  String? name;
 
   /// Email of the player
-  String email;
+  String? email;
 
   /// Age of the player
-  int age;
+  int? age;
 
   /// Player score
-  int score;
+  int? score;
 
   /// Has the player confirmed his email?
   ///
   /// Should not be sent to client
-  bool emailConfirmed;
+  bool? emailConfirmed;
 
   Player();
 
-  static Player fromMap(Map map) => serializer.fromMap(map);
+  static Player? fromMap(Map map) => serializer.fromMap(map);
 
   static PlayerSerializer serializer = new PlayerSerializer();
 
-  Map toMongo() => serializer.toMap(this);
+  Map<String, dynamic>? toMongo() => serializer.toMap(this);
 
   String toString() => toMongo().toString();
 }
